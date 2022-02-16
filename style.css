@@ -1,0 +1,36 @@
+body {
+    background-color:black;
+    color: white;
+    width: 200px;
+    display: block;
+    text-align: center;
+}
+
+body h1, #controls {
+    align-items: center;
+    display: inline-block;
+}
+
+#submit {
+    width: 180px;
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+input {
+    max-width: 3em;
+    text-align: center;
+}
+
+.helpText {
+    font-weight: bolder;
+    color: cyan;
+    font-style:italic;
+}
+
+#title {
+    text-shadow: 0 0 2rem white;
+    font-kerning: normal;
+    font-weight: bolder;
+}
