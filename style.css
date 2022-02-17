@@ -18,8 +18,12 @@ body h1, #controls {
     margin-bottom: 10px;
 }
 
+.numControl {
+    width: 2em;
+}
+
 input {
-    max-width: 3em;
+    width: 3em;
     text-align: center;
 }
 
@@ -32,5 +36,11 @@ input {
 #title {
     text-shadow: 0 0 2rem white;
     font-kerning: normal;
+    font-weight: bolder;
+}
+
+#error {
+    color: red;
+    text-shadow: 0 0 2rem red;
     font-weight: bolder;
 }

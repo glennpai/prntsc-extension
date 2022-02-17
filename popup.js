@@ -1,3 +1,16 @@
+/*****************************************************************************
+*   popup.js
+*
+*   Logic behind the extension view 
+*
+*   Pulled rng and URL code from another project of mine with a similar purpose
+*   
+*   Authored by Christopher Glenn (chglenn20@gmail.com)
+******************************************************************************/
+
+
+// Initialize map to allow us to grab random characters for the URLs
+// Please make this less ugly if I'm missing something obvious
 const chars = new Map([
     ['0', '0'],
     ['1', '1'],
@@ -37,79 +50,98 @@ const chars = new Map([
     ['35', 'z']
 ]);
 
+// Initialize variables
 let numTabs = 0;
 let inputElement;
 let submitButton;
+let errorElement;
 let minusFiveButton;
 let minusOneButton;
 let plusOneButton;
 let plusFiveButton;
 
+// Load elements and add event listeners once popup is open
 document.addEventListener('DOMContentLoaded', () => {
     inputElement = document.getElementById('numTabs');
     submitButton = document.getElementById('submit');
+    errorElement = document.getElementById('error');
     minusFiveButton = document.getElementById('-5');
     minusOneButton = document.getElementById('-1');
     plusOneButton = document.getElementById('+1');
     plusFiveButton = document.getElementById('+5');
-
-    minusFiveButton.addEventListener('click', () => {
-        updateTabs(minusFiveButton.id);
-    });
-
-    minusOneButton.addEventListener('click', () => {
-        updateTabs(minusOneButton.id);
-    });
-
-    plusOneButton.addEventListener('click', () => {
-        updateTabs(plusOneButton.id);
-    });
-
-    plusFiveButton.addEventListener('click', () => {
-        updateTabs(plusFiveButton.id);
-    });
-
-    submitButton.addEventListener('click', () => {
-        openTabs(numTabs);
-    });
-
+    
+    // Submit has to be from an eventListener instead of a form to prevent violating content security policies
+    // This can be fixed with additional application permissions but this looks prettier anyway
+    submitButton.addEventListener('click', () => { go(); }); 
+    inputElement.addEventListener('input', () => { validateInput() });
+    minusFiveButton.addEventListener('click', () => { updateTabs(minusFiveButton); });
+    minusOneButton.addEventListener('click', () => { updateTabs(minusOneButton); });
+    plusOneButton.addEventListener('click', () => { updateTabs(plusOneButton); });
+    plusFiveButton.addEventListener('click', () => { updateTabs(plusFiveButton); });
 });
 
-function updateTabs(value) {
-    let chars = value.split("");
-    let isPos = (chars[0] === '+') ? true : false;
+// Validate the input element contains a valid value, otherwise fix the value
+function validateInput() {
+    const value = inputElement.value;
+    const reg = new RegExp('^[0-9]*$');
+
+    if (reg.test(value) && value !== '') {
+        numTabs = parseInt(value);
+        errorElement.innerHTML = '';
+        return true;
+    }
+
+    else if (value === '') {
+        inputElement.value, numTabs = 0;
+        errorElement.innerHTML = '';
+        return true;
+    }
+
+    else {
+        errorElement.innerHTML = 'Invalid value. Please enter a number.';
+        return false;
+    }
+}
+
+// Update the value in the input element using numTabs as a model
+function updateTabs(button) {
+    if (!validateInput()) { return; }
+
+    const value = button.id;
+    const chars = value.split("");
+    const isPos = (chars[0] === '+') ? true : false;
 
     if (isPos) {
         numTabs = numTabs + parseInt(chars[1]);
         inputElement.value = numTabs;
     } else {
         numTabs = numTabs - parseInt(chars[1]);
-        if (numTabs < 0) {
-            numTabs = 0;
-        }
+        numTabs = numTabs < 0 ? 0 : numTabs;    // Do not allow values less than zero
         inputElement.value = numTabs;
     }
-    document.getElementById('debug').innerHTML = numTabs;
 }
 
-function openTabs(numTabs) {
+// Open tabs based on the current value in numTabs
+function openTabs() {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         for (let i = 0; i < numTabs; i++) {
             imgUrl = generateUrl();
-            chrome.tabs.create({ url: `http://www.prnt.sc/${imgUrl}` })
+            chrome.tabs.create({ url: `http://www.prnt.sc/${imgUrl}` });
         }
     });
 }
 
+// Roll that beautiful D36 to pull from the giant ugly map
 function rng(max) {
     return Math.floor(Math.random() * max);
 }
 
+// Returns a random char (0-9, a-z) using RNG
 function generateChar() {
-    const random = this.rng(36);
     return chars.get(String(this.rng(36)));
 }
 
+// Patch together six random chars to create a six digit string for the URL
 function generateUrl() {
     let url = '';
 
@@ -122,4 +154,10 @@ function generateUrl() {
     }
 
     return url;
+}
+
+// Let's go, brother
+function go() {
+    if (!validateInput()) { return; }
+    else { openTabs() }
 }
