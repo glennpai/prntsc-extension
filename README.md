@@ -38,3 +38,7 @@ This extension is not yet published to the Chrome extension marketplace. Due to 
 - Create an "AFK" mode where the tabs will be loaded, focused, and unloaded without user input
 - Create a new icon (even though the pizza icon is beautiful)
 - Publish to the Chrome extension marketplace
+- Add slider to adjust interval (0-1 sec)
+- Improve docs and comment quality
+- Better (reusable) error handling
+- Change popup interface to a form maybe?
