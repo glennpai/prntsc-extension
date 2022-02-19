@@ -39,6 +39,9 @@ This extension is not yet published to the Chrome extension marketplace. Due to 
 - Create a new icon (even though the pizza icon is beautiful)
 - Publish to the Chrome extension marketplace
 - Add slider to adjust interval (0-1 sec)
+- Add settings menu and save settings locally
 - Improve docs and comment quality
 - Better (reusable) error handling
 - Change popup interface to a form maybe?
+- Add unit tests
+- Start using some linter so I stop pushing bad format

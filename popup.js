@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     plusFiveButton = document.getElementById('+5');
     
     submitButton.addEventListener('click', () => { submit(); }); 
-    inputElement.addEventListener('input', () => { validateInput() });
+    inputElement.addEventListener('input', () => { validateInput(); });
     minusFiveButton.addEventListener('click', () => { updateTabs(minusFiveButton); });
     minusOneButton.addEventListener('click', () => { updateTabs(minusOneButton); });
     plusOneButton.addEventListener('click', () => { updateTabs(plusOneButton); });

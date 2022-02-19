@@ -9,7 +9,7 @@
 ******************************************************************************/
 
 const delay = 300; // 300ms delay
-const chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
+const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
 // Returns a random char (0-9, a-z) using RNG
 function generateChar() {
